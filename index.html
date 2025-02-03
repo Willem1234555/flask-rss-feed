@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Latest News Articles</title>
+  <meta http-equiv="refresh" content="60">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Latest News Articles</h1>
+  {% if last_reload %}
+    <p>Last reload: {{ last_reload.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+  {% else %}
+    <p>Last reload: Never</p>
+  {% endif %}
+
+  {% for article in articles %}
+    <div class="article">
+      <h2>
+        <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+      </h2>
+      <div class="date">
+        {{ article.published.strftime('%Y-%m-%d %H:%M:%S') if article.published else 'No date available' }}
+      </div>
+      <p>{{ article.summary|safe }}</p>
+      <div class="source">
+        Source: <a href="https://{{ article.link.split('/')[2] }}" target="_blank">{{ article.link.split('/')[2] }}</a>
+      </div>
+    </div>
+  {% endfor %}
+</body>
+</html>
